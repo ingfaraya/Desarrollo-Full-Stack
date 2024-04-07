@@ -19,9 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 
-
-
-
 @RestController
 @RequestMapping("/peliculas")
 public class PeliculaController {
@@ -48,7 +45,7 @@ public class PeliculaController {
         return peliculaService.updatePelicula(id, pelicula);
     }
 
-    @DeleteMapping("")
+    @DeleteMapping("/{id}")
     public void deletePelicula (@PathVariable Long id){
         peliculaService.deletePelicula(id);
     }

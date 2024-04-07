@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import demo.peliculas.model.Pelicula;
 import demo.peliculas.repository.PeliculaRepository;
@@ -17,17 +18,42 @@ public class PeliculaServiceImpl implements PeliculaService {
 
     @Override
     public List<Pelicula> getAllPeliculas() {
-        return peliculaRepository.findAll();
+        try {
+            return peliculaRepository.findAll();
+        } catch (Exception e) {
+            System.out.println("getAllPeliculas: " + e.toString());
+            return null;
+        }
     }
 
     @Override
     public Optional<Pelicula> getPeliculaById(Long id) {
-        return peliculaRepository.findById(id);
+        try {
+            if (peliculaRepository.existsById(id)) {
+                return peliculaRepository.findById(id);
+                
+            } else {
+                return Optional.empty();
+            }
+        } catch (Exception e) {
+            System.out.println("getPeliculaById [id][" + id + "]: " + e.toString());
+            return Optional.empty();
+        }
     }
 
     @Override
     public Pelicula createdPelicula(Pelicula pelicula) {
-        return peliculaRepository.save(pelicula);
+        try {
+            pelicula.setTitulo(pelicula.getTitulo());
+            pelicula.setAño(pelicula.getAño());
+            pelicula.setDirector(pelicula.getDirector());
+            pelicula.setGenero(pelicula.getGenero());
+            pelicula.setSinopsis(pelicula.getSinopsis());
+            return peliculaRepository.save(pelicula);
+        } catch (Exception e) {
+            System.out.println("createdPelicula [pelicula][" + pelicula + "]: " + e.toString());
+            return pelicula;
+        }
     }
 
     @Override
@@ -38,12 +64,12 @@ public class PeliculaServiceImpl implements PeliculaService {
                 return peliculaRepository.save(pelicula);
                 
             } else {
-                return null;
+                return pelicula;
             }
         } catch (Exception e) {
-            // TODO: handle exception
+            System.out.println("updatePelicula [id][" + id + "]: " + e.toString());
+            return pelicula;
         }
-        return pelicula;
     }
 
     @Override
@@ -52,8 +78,7 @@ public class PeliculaServiceImpl implements PeliculaService {
             peliculaRepository.deleteById(id);
             
         } catch (Exception e) {
-            // TODO: handle exception
+            System.out.println("deletePelicula ['id'][" + id + "]: " + e.toString());
         }
     }
-
 }
