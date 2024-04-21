@@ -40,7 +40,7 @@ public class PeliculaController {
     public CollectionModel<EntityModel<Pelicula>> getAllPeliculas() {
         List<Pelicula> peliculas = studentService.getAllPeliculas();
         log.info("GET /peliculas");
-        log.info("Retornando todos los estudiantes");
+        log.info("Retornando todas los peliculas");
         List<EntityModel<Pelicula>> peliculasResources = peliculas.stream()
             .map( student -> EntityModel.of(student,
                 WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getPeliculaById(student.getId())).withSelfRel()
@@ -56,19 +56,24 @@ public class PeliculaController {
     @GetMapping("/{id}")
     public EntityModel<Pelicula> getPeliculaById(@PathVariable Long id) {
         Optional<Pelicula> student = studentService.getPeliculaById(id);
-
+        log.info("GET /peliculas/id/"+id);
+        log.info("Retornando pelicula id: "+id);
         if (student.isPresent()) {
             return EntityModel.of(student.get(),
                 WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getPeliculaById(id)).withSelfRel(),
                 WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllPeliculas()).withRel("all-peliculas"));
         } else {
+            log.error("Pelicula not found with id: " + id);
             throw new PeliculaNotFoundException("Pelicula not found with id: " + id);
+            
         }
     }
 
     @PostMapping
     public EntityModel<Pelicula> createPelicula(@Validated @RequestBody Pelicula student) {
         Pelicula createdPelicula = studentService.createPelicula(student);
+        log.info("POST /peliculas");
+        log.info("pelicula creada con el id: "+createdPelicula.getId());
             return EntityModel.of(createdPelicula,
                 WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getPeliculaById(createdPelicula.getId())).withSelfRel(),
                 WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllPeliculas()).withRel("all-peliculas"));
@@ -78,6 +83,8 @@ public class PeliculaController {
     @PutMapping("/{id}")
     public EntityModel<Pelicula> updatePelicula(@PathVariable Long id, @RequestBody Pelicula student) {
         Pelicula updatedPelicula = studentService.updatePelicula(id, student);
+        log.info("PUT /peliculas/id/"+id);
+        log.info("pelicula actualizada con el id: "+id);
         return EntityModel.of(updatedPelicula,
                 WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getPeliculaById(id)).withSelfRel(),
                 WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllPeliculas()).withRel("all-peliculas"));
@@ -87,6 +94,8 @@ public class PeliculaController {
     @DeleteMapping("/{id}")
     public void deletePelicula(@PathVariable Long id){
         studentService.deletePelicula(id);
+        log.info("DELETE /peliculas/id/"+id);
+        log.info("pelicula borrada con el id: "+id);
     }
 
 
