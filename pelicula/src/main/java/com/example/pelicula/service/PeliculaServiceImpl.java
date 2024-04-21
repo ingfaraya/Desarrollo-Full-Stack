@@ -12,35 +12,35 @@ import java.util.Optional;
 @Service
 public class PeliculaServiceImpl implements PeliculaService{
     @Autowired
-    private PeliculaRepository studentRepository;
+    private PeliculaRepository peliculaRepository;
 
     @Override
     public List<Pelicula> getAllPeliculas() {
-        return studentRepository.findAll();
+        return peliculaRepository.findAll();
     }
 
     @Override
     public Optional<Pelicula> getPeliculaById(Long id) {
-        return studentRepository.findById(id);
+        return peliculaRepository.findById(id);
     }
     
     @Override
-    public Pelicula createPelicula(Pelicula student){
-        return studentRepository.save(student);
+    public Pelicula createPelicula(Pelicula pelicula){
+        return peliculaRepository.save(pelicula);
     }
 
     @Override
-    public Pelicula updatePelicula(Long id, Pelicula student){
-        if(studentRepository.existsById(id)){
-            student.setId(id);
-            return studentRepository.save(student);
-        }   else {
-                return null;
-        }
+    public Pelicula updatePelicula(Long id, Pelicula pelicula) {
+        return peliculaRepository.findById(id)
+            .map(existingPelicula -> {
+                pelicula.setId(id);
+                return peliculaRepository.save(pelicula);
+            })
+            .orElseThrow(() -> new RuntimeException("Pelicula not found with id: " + id));  // Consider using a custom exception
     }
 
     @Override
     public void deletePelicula(Long id){
-        studentRepository.deleteById(id);
+        peliculaRepository.deleteById(id);
     }
 }

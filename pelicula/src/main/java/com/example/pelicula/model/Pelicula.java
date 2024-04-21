@@ -37,15 +37,6 @@ public class Pelicula extends RepresentationModel<Pelicula>{
     @Column(name= "sinopsis")
     private String sinopsis;
 
-    public Pelicula(Long id, String titulo, String ano, String director, String genero, String sinopsis) {
-        this.id = id;
-        this.titulo = titulo;
-        this.ano = ano;
-        this.director = director;
-        this.genero = genero;
-        this.sinopsis = sinopsis;
-    }
-
     public Long getId() {
         return id;
     }
