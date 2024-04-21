@@ -1,10 +1,10 @@
-package com.example.bdget;
+package com.example.pelicula;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class BdgetApplicationTests {
+class PeliculaApplicationTests {
 
 	@Test
 	void contextLoads() {
