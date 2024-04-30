@@ -81,15 +81,13 @@ public class StoreController {
         try {
             Optional<User> user = userService.findById(id);
             List<Address> addresses = addressService.findAllByUserId(user.get().getId());
-            Optional<UserRole> userRole = userRoleService.getUserRolesByUserId(addresses.get(0).getUser().getId());
-            Optional<Role> role = roleService.findById(userRole.get().getRole().getId());
 
             addresses.forEach(address -> Hibernate.initialize(address.getUser()));
 
             List<EntityModel<User>> addressResources = user.stream()
                     .map(address -> EntityModel.of(address,
                             linkTo(methodOn(StoreController.class).getUserAddresses(id)).withRel("address"),
-                            linkTo(methodOn(StoreController.class).getRoleById(role.get().getId())).withRel("role"),
+                            linkTo(methodOn(StoreController.class).getRoleById(user.get().getId())).withRel("role"),
                             linkTo(methodOn(StoreController.class).getUserById(id)).withRel("user")))
                     .collect(Collectors.toList());
 
@@ -107,15 +105,13 @@ public class StoreController {
         try {
             Optional<User> user = userService.findById(id);
             List<Address> addresses = addressService.findAllByUserId(user.get().getId());
-            Optional<UserRole> userRole = userRoleService.getUserRolesByUserId(addresses.get(0).getUser().getId());
-            Optional<Role> role = roleService.findById(userRole.get().getRole().getId());
 
             addresses.forEach(address -> Hibernate.initialize(address.getUser()));
 
             List<EntityModel<Address>> addressResources = addresses.stream()
                     .map(address -> EntityModel.of(address,
                             linkTo(methodOn(StoreController.class).getUserAddresses(id)).withRel("address"),
-                            linkTo(methodOn(StoreController.class).getRoleById(role.get().getId())).withRel("role"),
+                            linkTo(methodOn(StoreController.class).getRoleById(user.get().getId())).withRel("role"),
                             linkTo(methodOn(StoreController.class).getUserById(id)).withRel("user")))
                     .collect(Collectors.toList());
 
@@ -141,8 +137,8 @@ public class StoreController {
 
         List<EntityModel<Role>> addressResources = role.stream()
                 .map(address -> EntityModel.of(address,
-                        linkTo(methodOn(StoreController.class).getUserAddresses(id)).withSelfRel(),
-                        linkTo(methodOn(StoreController.class).getRoleById(role.get().getId())).withSelfRel(),
+                        linkTo(methodOn(StoreController.class).getUserAddresses(id)).withRel("address"),
+                        linkTo(methodOn(StoreController.class).getRoleById(user.get().getId())).withRel("role"),
                         linkTo(methodOn(StoreController.class).getUserById(id)).withRel("user")))
                 .collect(Collectors.toList());
         return CollectionModel.of(addressResources);
