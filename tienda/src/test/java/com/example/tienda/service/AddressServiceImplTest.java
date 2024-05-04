@@ -20,6 +20,7 @@ public class AddressServiceImplTest {
     @InjectMocks
     private AddressServiceImpl addressService;
 
+    @SuppressWarnings("deprecation")
     public AddressServiceImplTest() {
         MockitoAnnotations.initMocks(this);
     }

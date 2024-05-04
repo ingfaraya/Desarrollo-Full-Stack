@@ -1,10 +1,6 @@
 package com.example.tienda.controller;
 
-import com.example.tienda.controller.StoreController;
-import com.example.tienda.model.Address;
-import com.example.tienda.model.Role;
 import com.example.tienda.model.User;
-import com.example.tienda.model.UserRole;
 import com.example.tienda.service.AddressService;
 import com.example.tienda.service.RoleService;
 import com.example.tienda.service.UserRoleService;
@@ -14,15 +10,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -47,6 +40,7 @@ public class StoreControllerTest {
 
     private MockMvc mockMvc;
 
+    @SuppressWarnings("deprecation")
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
